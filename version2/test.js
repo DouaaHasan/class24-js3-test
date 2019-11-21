@@ -2,6 +2,7 @@
 
 // 1.
 // Using JavaScript only (adding HTML to index.html is NOT allowed), create a function that:
+
 // - Takes as an argument the following array of objects:
 const books = [
   {
@@ -16,35 +17,31 @@ const books = [
       'https://images-na.ssl-images-amazon.com/images/I/515iEcDr1GL._SX258_BO1,204,203,200_.jpg',
   },
 ];
-// - Iterates over the array and outputs the details of each item nto the DOM.
-// - Displays the items inside an unordered list (created programmatically using JavaScript)
-// function creatAndAppend(name, parent, options = {}) {
-//   const elem = document.createElement(name);
-//   parent.appendChild(elem);
-//   Object.entries(options).forEach(([key, value]) => {
-//     if (key === 'text') {
-//       elem.textContent = value;
-//     } else {
-//       elem.setAttribute(key, value);
-//     }
-//   });
-//   return elem;
-// }
 
-function IterateThroughBooks(arr) {
+function creatAndAppend(name, parent, options = {}) {
+  const elem = document.createElement(name);
+  parent.appendChild(elem);
+  Object.entries(options).forEach(([key, value]) => {
+    if (key === 'text') {
+      elem.textContent = value;
+    } else {
+      elem.setAttribute(key, value);
+    }
+  });
+  return elem;
+}
+
+function iterateThroughBooks(arr) {
+  // - Iterates over the array and outputs the details of each item nto the DOM.
   arr.forEach(book => {
-    const myUl1 = document.createElement('ul');
-    document.body.appendChild(myUl1);
-    const myLi1 = document.createElement('li');
-    const myImg = document.createElement('img');
-    myLi1.textContent = `${book.bookName} by ${book.author}`;
-    myImg.src = `${book.coverURL}`;
-
-    myUl1.appendChild(myLi1);
-    myUl1.appendChild(myImg);
+    // - Displays the items inside an unordered list (created programmatically using JavaScript)
+    const myUl1 = creatAndAppend('ul', document.body);
+    creatAndAppend('li', myUl1, { text: `${book.bookName} by ${book.author}` });
+    creatAndAppend('img', myUl1, { src: `${book.coverURL}` });
   });
 }
-IterateThroughBooks(books);
+iterateThroughBooks(books);
+
 // 2.
 // Write a function that:
 // - Makes an API call using the Fetch API or the regular XMLHttpRequest
@@ -53,16 +50,13 @@ IterateThroughBooks(books);
 
 function fetchJson(url) {
   return fetch(url).then(res => res.json());
-  // .then(data => console.log(data));
 }
+
 fetchJson('https://jsonplaceholder.typicode.com/users/1').then(obj => {
-  for (const property in obj) {
-    const myUl = document.createElement('ul');
-    document.body.appendChild(myUl);
-    const myLi = document.createElement('li');
-    myLi.textContent = `${property}: ${obj[property]}`;
-    myUl.appendChild(myLi);
-  }
+  const myUl = creatAndAppend('ul', document.body);
+  creatAndAppend('li', myUl, { text: obj.name });
+  creatAndAppend('li', myUl, { text: obj.email });
+  creatAndAppend('li', myUl, { text: obj.address.city });
 });
 
 // 3.
@@ -71,8 +65,7 @@ fetchJson('https://jsonplaceholder.typicode.com/users/1').then(obj => {
 // - Returns the country with the longest name.
 // - Uses the following array as an argument:
 const countries = ['The Netherlands', 'Syria', 'Turkey', 'Mexico', 'United States'];
-function compareArray(arr) {
-  // I couldn't figure out the logic
-  return arr[0];
+function findLongestString(arr) {
+  return arr.reduce((a, b) => (a.length > b.length ? a : b));
 }
-compareArray(countries);
+console.log(findLongestString(countries));
